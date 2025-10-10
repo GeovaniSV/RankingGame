@@ -1,11 +1,15 @@
 import Home from "../Screens/Home";
-import Criar from "../Screens/Criar";
+import NewGame from "../Screens/NewGame";
+import Game from "../Screens/Game";
 import { Ionicons } from "@expo/vector-icons";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-export default function MyTabs() {
+function MyTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -14,7 +18,7 @@ export default function MyTabs() {
 
           const MappedRouteNames: Record<string, string> = {
             Home: (iconName = focused ? "home" : "home-outline"),
-            Criar: (iconName = focused ? "pencil" : "pencil-outline"),
+            NewGame: (iconName = focused ? "pencil" : "pencil-outline"),
           };
 
           iconName = MappedRouteNames[route.name];
@@ -28,7 +32,23 @@ export default function MyTabs() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Detalhes" component={Criar} />
+      <Tab.Screen name="NewGame" component={NewGame} />
     </Tab.Navigator>
   );
 }
+
+function MyStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainTabs" component={MyTabs} />
+
+      <Stack.Screen
+        name="Game"
+        component={Game}
+        options={{ headerShown: true }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+export default MyStack;

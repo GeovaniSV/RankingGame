@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Algo() {
+export default function Game() {
   return (
     <View style={styles.container}>
       <Text>
-        Tela de criação de objetos, onde iremos adicionar os jogos, dar contexto
-        e nota
+        aqui é a tela onde veremos algumas informações adicionais dos jogos
       </Text>
     </View>
   );
@@ -17,5 +16,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    padding: 18,
   },
 });
