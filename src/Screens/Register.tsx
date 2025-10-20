@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
 import { TextInputChangeEvent, View } from "react-native";
+import { IUserRegister } from "../Types/userTypes";
 
 //components
 import { TextInputField } from "../Components/TextInputField";
 import { ButtonField } from "../Components/ButtonField";
 import { TitleRankingGame } from "../Components/TitleRankingGame";
 
+//functions
+import { userRegisterFunction } from "../Services/users/userRegister";
+
 export default function Register({ navigation }: any) {
-  const [inputValues, setInputValues] = useState({
-    name: "",
+  const [inputValues, setInputValues] = useState<IUserRegister>({
+    fullName: "",
     email: "",
     password: "",
   });
 
+  const createUser = async () => {
+    await userRegisterFunction(inputValues);
+  };
+
   useEffect(() => {
-    inputValues.name = "";
+    inputValues.fullName = "";
     inputValues.email = "";
     inputValues.password = "";
   }, []);
@@ -27,9 +35,9 @@ export default function Register({ navigation }: any) {
           <TextInputField
             label="Nome completo"
             placeholder="Digite seu nome"
-            value={inputValues.name}
+            value={inputValues.fullName}
             onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, name: e.nativeEvent.text })
+              setInputValues({ ...inputValues, fullName: e.nativeEvent.text })
             }
           />
           <TextInputField
@@ -49,7 +57,7 @@ export default function Register({ navigation }: any) {
               setInputValues({ ...inputValues, password: e.nativeEvent.text })
             }
           />
-          <ButtonField title="Cadastrar" onPress={} />
+          <ButtonField title="Cadastrar" onPress={createUser} />
         </View>
       </View>
     </View>
