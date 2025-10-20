@@ -1,4 +1,5 @@
-const { fontFamily } = require("./src/styles/fontFamily");
+const { fontFamily } = require("./src/Styles/fontFamily");
+const { colors } = require("./src/Styles/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
   content: ["./App.tsx", "./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: { fontFamily },
+    extend: { fontFamily, colors },
   },
   plugins: [],
 };
