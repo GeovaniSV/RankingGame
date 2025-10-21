@@ -10,11 +10,8 @@ import { TitleRankingGame } from "../Components/TitleRankingGame";
 //functions
 import { userRegisterFunction } from "../Services/users/userRegister";
 
-type EmptyFieldError = {
-  message: string;
-  rule: string;
-  field: string;
-}[];
+//interfaces/types
+import { EmptyFieldError } from "../Types/apiErrorsTypes";
 
 export default function Register({ navigation }: any) {
   const [user, setUser] = useState({});

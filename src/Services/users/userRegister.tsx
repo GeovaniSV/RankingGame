@@ -2,7 +2,7 @@ import { api } from "../api";
 import { AxiosError } from "axios";
 
 //types
-import { IUserRegister } from "../../Types/userTypes";
+import { IUserRegister, IUserLogin } from "../../Types/userTypes";
 
 const userRegisterFunction = async ({
   fullName,
@@ -17,6 +17,26 @@ const userRegisterFunction = async ({
     });
     return user;
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { status, code } = error;
+      const errorMap: Record<number, string> = {
+        422: error.response?.data.errors,
+      };
+
+      return { error: errorMap[status!] };
+    }
+  }
+};
+
+const userLoginFunction = async ({ email, password }: IUserLogin) => {
+  try {
+    const token = await api.post("/auth/login", {
+      email,
+      password,
+    });
+
+    return token;
+  } catch (error) {
     console.log(error);
     if (error instanceof AxiosError) {
       const { status, code } = error;
@@ -29,4 +49,4 @@ const userRegisterFunction = async ({
   }
 };
 
-export { userRegisterFunction };
+export { userRegisterFunction, userLoginFunction };
