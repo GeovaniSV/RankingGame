@@ -15,7 +15,7 @@ function TextInputField({
         placeholder="Digite sua senha"
         {...props}
       />
-      {error && <Text className="text-red-500 text-xs mt-1">{error}</Text>}
+      <Text className="text-red-500 text-xs mt-1">{error}</Text>
     </View>
   );
 }

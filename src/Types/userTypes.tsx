@@ -4,4 +4,9 @@ interface IUserRegister {
   password: string;
 }
 
-export { IUserRegister };
+interface IUserLogin {
+  email: string;
+  password: string;
+}
+
+export { IUserRegister, IUserLogin };

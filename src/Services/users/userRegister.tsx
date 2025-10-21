@@ -1,6 +1,8 @@
 import { api } from "../api";
+import { AxiosError } from "axios";
+
+//types
 import { IUserRegister } from "../../Types/userTypes";
-import { isAxiosError, AxiosError } from "axios";
 
 const userRegisterFunction = async ({
   fullName,
@@ -17,11 +19,12 @@ const userRegisterFunction = async ({
   } catch (error) {
     console.log(error);
     if (error instanceof AxiosError) {
-      const errorMap = {
-        422: "Invalid user credentials",
+      const { status, code } = error;
+      const errorMap: Record<number, string> = {
+        422: error.response?.data.errors,
       };
 
-      //tamo tentando fazer um negocio ai
+      return { error: errorMap[status!] };
     }
   }
 };
