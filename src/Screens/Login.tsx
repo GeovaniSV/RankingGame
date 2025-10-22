@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Text,
   View,
@@ -12,7 +13,7 @@ import { TitleRankingGame } from "../Components/TitleRankingGame";
 
 //functions
 import { userLoginFunction } from "../Services/users/userRegister";
-import { useState } from "react";
+import { storeDataString } from "../utils/asyncStorage";
 
 //interfaces/types
 import { IUserLogin } from "../Types/userTypes";
@@ -38,7 +39,9 @@ export default function Login({ navigation }: any) {
       return;
     }
 
-    console.log(token?.data.token);
+    storeDataString("token", token?.data.token);
+
+    navigation.navigate("Home");
 
     setInputValues({
       email: "",
@@ -64,6 +67,11 @@ export default function Login({ navigation }: any) {
         [errorArray[i].field]: errorMap[errorArray[i].field],
       }));
     }
+
+    setInputValues({
+      email: "",
+      password: "",
+    });
   };
 
   return (

@@ -17,12 +17,9 @@ const userRegisterFunction = async ({
       password,
     });
 
-    console.log(user);
     return user;
   } catch (error) {
-    console.log(error);
     if (error instanceof AxiosError) {
-      console.log(error);
       const { status, code } = error;
       let conflictError: any = {};
       if (status == 409) {
@@ -51,12 +48,13 @@ const userLoginFunction = async ({ email, password }: IUserLogin) => {
 
     return token;
   } catch (error) {
-    console.log(error);
     if (error instanceof AxiosError) {
-      const { status, code } = error;
-      const errorMap: Record<number, string> = {
-        422: error.response?.data.errors,
-      };
+      const { status, response } = error;
+      const errorMap: Record<number, AxiosResponse<any, any, {}> | undefined> =
+        {
+          422: error.response?.data.errors,
+          400: response,
+        };
 
       return { error: errorMap[status!] };
     }
