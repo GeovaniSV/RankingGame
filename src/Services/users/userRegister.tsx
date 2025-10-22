@@ -1,5 +1,6 @@
+import Toast from "react-native-toast-message";
 import { api } from "../api";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 
 //types
 import { IUserRegister, IUserLogin } from "../../Types/userTypes";
@@ -15,12 +16,25 @@ const userRegisterFunction = async ({
       email,
       password,
     });
+
+    console.log(user);
     return user;
   } catch (error) {
+    console.log(error);
     if (error instanceof AxiosError) {
+      console.log(error);
       const { status, code } = error;
-      const errorMap: Record<number, string> = {
+      let conflictError: any = {};
+      if (status == 409) {
+        const err = error.response?.data.Error;
+        conflictError = {
+          field: "conflict",
+          err,
+        };
+      }
+      const errorMap: Record<number, AxiosError> = {
         422: error.response?.data.errors,
+        409: conflictError,
       };
 
       return { error: errorMap[status!] };

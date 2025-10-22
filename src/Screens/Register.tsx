@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
+import { useState } from "react";
 import { TextInputChangeEvent, View } from "react-native";
 import { IUserRegister } from "../Types/userTypes";
 
@@ -29,7 +30,11 @@ export default function Register({ navigation }: any) {
 
   const createUser = async () => {
     const user = await userRegisterFunction(inputValues);
-
+    Toast.show({
+      type: "success",
+      text1: "Sucesso",
+      text2: "Usuário cadastrado com sucesso",
+    });
     if ("error" in user!) {
       handleErrors(user.error);
       return;
@@ -44,7 +49,7 @@ export default function Register({ navigation }: any) {
     });
   };
 
-  const handleErrors = (value: string) => {
+  const handleErrors = (value: any) => {
     const errorMap: Record<string, string> = {
       fullName: "Campo NOME COMPLETO deve ser preenchido",
       email: "O campo EMAIL deve ser preenchido com um email válido",
@@ -56,6 +61,13 @@ export default function Register({ navigation }: any) {
       errorArray.push(value[i]);
     }
 
+    if (value.err.status == 409) {
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Email já cadastrado no sistema",
+      });
+    }
     for (let i = 0; i < errorArray.length; i++) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -83,21 +95,31 @@ export default function Register({ navigation }: any) {
           <TextInputField
             label="Email"
             placeholder="Digite sua senha"
+            autoCorrect={false}
             value={inputValues.email}
             onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, email: e.nativeEvent.text })
+              setInputValues({
+                ...inputValues,
+                email: e.nativeEvent.text.toLowerCase(),
+              })
             }
+            autoCapitalize="none"
             onFocus={() => setErrors({ ...errors, email: "" })}
             error={errors.email ?? errors.email}
           />
           <TextInputField
             label="Senha"
             placeholder="Digite sua senha"
+            autoCorrect={false}
             secureTextEntry
             value={inputValues.password}
             onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, password: e.nativeEvent.text })
+              setInputValues({
+                ...inputValues,
+                password: e.nativeEvent.text.toLowerCase(),
+              })
             }
+            autoCapitalize="none"
             onFocus={() => setErrors({ ...errors, password: "" })}
             error={errors.password ?? errors.password}
           />

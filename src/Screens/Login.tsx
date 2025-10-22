@@ -38,7 +38,7 @@ export default function Login({ navigation }: any) {
       return;
     }
 
-    console.log(token);
+    console.log(token?.data.token);
 
     setInputValues({
       email: "",
@@ -46,7 +46,7 @@ export default function Login({ navigation }: any) {
     });
   };
 
-  const handleErrors = (value: string) => {
+  const handleErrors = (value: any) => {
     const errorMap: Record<string, string> = {
       fullName: "Campo NOME COMPLETO deve ser preenchido",
       email: "O campo EMAIL deve ser preenchido com um email válido",
@@ -77,17 +77,29 @@ export default function Login({ navigation }: any) {
             placeholder="Digite sua senha"
             value={inputValues.email}
             onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, email: e.nativeEvent.text })
+              setInputValues({
+                ...inputValues,
+                email: e.nativeEvent.text.toLowerCase(),
+              })
             }
+            autoCapitalize="none"
+            onFocus={() => setErrors({ ...errors, email: "" })}
+            error={errors.email ?? errors.email}
           />
           <TextInputField
             label="Senha"
             placeholder="Digite sua senha"
             value={inputValues.password}
             onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, password: e.nativeEvent.text })
+              setInputValues({
+                ...inputValues,
+                password: e.nativeEvent.text.toLowerCase(),
+              })
             }
+            autoCapitalize="none"
             secureTextEntry
+            error={errors.password ?? errors.password}
+            onFocus={() => setErrors({ ...errors, password: "" })}
           />
           <ButtonField title="Entrar" onPress={login} />
         </View>
