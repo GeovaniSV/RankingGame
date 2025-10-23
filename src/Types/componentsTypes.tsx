@@ -12,4 +12,10 @@ interface CustomButtom extends ButtonProps {
   buttonClassName?: string;
 }
 
-export { CustomTextInput, CustomButtom };
+interface CustomTitleRankingGame {
+  className?: string;
+  firstLetterSize?: string;
+  textSize?: string;
+}
+
+export { CustomTextInput, CustomButtom, CustomTitleRankingGame };

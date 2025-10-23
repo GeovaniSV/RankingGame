@@ -12,7 +12,7 @@ import { ButtonField } from "../Components/ButtonField";
 import { TitleRankingGame } from "../Components/TitleRankingGame";
 
 //functions
-import { userLoginFunction } from "../Services/users/userRegister";
+import { userLoginFunction } from "../Services/usersFunctions";
 import { storeDataString } from "../utils/asyncStorage";
 
 //interfaces/types
@@ -82,7 +82,7 @@ export default function Login({ navigation }: any) {
         <View className="justify-center gap-12 p-8 w-full">
           <TextInputField
             label="Email"
-            placeholder="Digite sua senha"
+            placeholder="Digite seu email"
             value={inputValues.email}
             onChange={(e: TextInputChangeEvent) =>
               setInputValues({

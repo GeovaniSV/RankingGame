@@ -11,26 +11,26 @@ const storeDataString = async (key: string, value: string) => {
 const storeDataObject = async (key: string, value: {}) => {
   try {
     const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem("my-key", jsonValue);
+    await AsyncStorage.setItem(key, jsonValue);
   } catch (e) {
     console.log(e);
   }
 };
 
-const getDataString = async () => {
+const getDataString = async (key: string) => {
   try {
-    const value = await AsyncStorage.getItem("my-key");
+    const value = await AsyncStorage.getItem(key);
     if (value !== null) {
-      // value previously stored
+      return value;
     }
   } catch (e) {
     console.log(e);
   }
 };
 
-const getDataObject = async () => {
+const getDataObject = async (key: string) => {
   try {
-    const jsonValue = await AsyncStorage.getItem("my-key");
+    const jsonValue = await AsyncStorage.getItem(key);
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
     console.log(e);

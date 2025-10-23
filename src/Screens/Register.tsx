@@ -9,7 +9,7 @@ import { ButtonField } from "../Components/ButtonField";
 import { TitleRankingGame } from "../Components/TitleRankingGame";
 
 //functions
-import { userRegisterFunction } from "../Services/users/userRegister";
+import { userRegisterFunction } from "../Services/usersFunctions";
 
 //interfaces/types
 import { EmptyFieldError } from "../Types/apiErrorsTypes";
@@ -94,7 +94,7 @@ export default function Register({ navigation }: any) {
           />
           <TextInputField
             label="Email"
-            placeholder="Digite sua senha"
+            placeholder="Digite seu email"
             autoCorrect={false}
             value={inputValues.email}
             onChange={(e: TextInputChangeEvent) =>

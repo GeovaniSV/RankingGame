@@ -1,15 +1,36 @@
-import { TextInput, View, Text } from "react-native";
+import { View, Text } from "react-native";
 
-function TitleRankingGame() {
+//types/interface
+import { CustomTitleRankingGame } from "../Types/componentsTypes";
+
+function TitleRankingGame({
+  className,
+  firstLetterSize,
+  textSize,
+}: CustomTitleRankingGame) {
   return (
-    <View className="flex items-center justify-center">
+    <View
+      className={`flex items-center justify-center ${className ? className : ""}`}
+    >
       <View className="flex-row items-end">
-        <Text className="text-6xl font-jaini">R</Text>
-        <Text className="text-4xl font-jaini">anking</Text>
+        <Text
+          className={`font-jaini ${firstLetterSize ? firstLetterSize : "text-6xl"}`}
+        >
+          R
+        </Text>
+        <Text className={`font-jaini ${textSize ? textSize : "text-4xl"}`}>
+          anking
+        </Text>
       </View>
       <View className="flex-row items-end">
-        <Text className="text-6xl font-jaini ml-2">G</Text>
-        <Text className="text-4xl font-jaini">ame</Text>
+        <Text
+          className={`font-jaini ml-2 ${firstLetterSize ? firstLetterSize : "text-6xl"}`}
+        >
+          G
+        </Text>
+        <Text className={`font-jaini ${textSize ? textSize : "text-4xl"}`}>
+          ame
+        </Text>
       </View>
     </View>
   );

@@ -1,9 +1,9 @@
 import Toast from "react-native-toast-message";
-import { api } from "../api";
+import { api } from "./api";
 import { AxiosError, AxiosResponse } from "axios";
 
 //types
-import { IUserRegister, IUserLogin } from "../../Types/userTypes";
+import { IUserRegister, IUserLogin } from "../Types/userTypes";
 
 const userRegisterFunction = async ({
   fullName,
