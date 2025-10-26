@@ -7,13 +7,13 @@ const postGame = async ({
   description,
   review,
   score,
-  filePath,
+  file_path,
 }: IGame) => {
   try {
     const token = await getDataString("token");
     const hasName = name ? name : null;
     const hasDescription = description ? description : null;
-    const hasFilePath = filePath ? filePath : null;
+    const hasfile_path = file_path ? file_path : null;
     await api.post(
       "/games",
       {
@@ -21,10 +21,11 @@ const postGame = async ({
         description: hasDescription,
         review,
         score,
-        filePath: hasFilePath,
+        file_path: hasfile_path,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    console.log("passei aqui");
   } catch (error) {
     console.log(error);
   }
@@ -43,11 +44,27 @@ const getGames = async () => {
 };
 
 const getUniqueGame = async (id: number) => {
-  const token = await getDataString("token");
-  const response = await api.get(`/games/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
+  try {
+    const token = await getDataString("token");
+    const response = await api.get(`/games/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export { postGame, getGames, getUniqueGame };
+const deleteGame = async (id: number) => {
+  try {
+    const token = await getDataString("token");
+    const response = await api.delete(`/games/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { postGame, getGames, getUniqueGame, deleteGame };

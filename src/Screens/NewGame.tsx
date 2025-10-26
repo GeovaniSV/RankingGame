@@ -21,7 +21,6 @@ import { saveBase64ImageToFile } from "../utils/imagesFunction";
 
 //types/intefaces
 import { IGame } from "../Types/gameTypes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewGame({ navigation }: any) {
   const [image, setImage] = useState<string | null>(null);
@@ -62,9 +61,6 @@ export default function NewGame({ navigation }: any) {
     const fileName = imagePicked.fileName || `image_${Date.now()}.jpg`;
     const absoluteUri = imagePicked.uri;
     const mimeType = imagePicked.mimeType;
-    const file = imagePicked.file;
-
-    console.log("File: ", file);
 
     await storeDataString(fileName, imageBase64!);
 
@@ -136,23 +132,11 @@ export default function NewGame({ navigation }: any) {
 
         <View>
           <TextInputField
-            label="Jogo"
+            label="Jogo*"
             placeholder="Digite o nome do jogo"
             value={inputValues.name}
             onChange={(e: TextInputChangeEvent) =>
               setInputValues({ ...inputValues, name: e.nativeEvent.text })
-            }
-          />
-
-          <TextInputField
-            label="Descrição"
-            placeholder="Digite a descrição do jogo"
-            value={inputValues.description}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({
-                ...inputValues,
-                description: e.nativeEvent.text,
-              })
             }
           />
 

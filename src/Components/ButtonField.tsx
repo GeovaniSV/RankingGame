@@ -4,11 +4,12 @@ import { CustomButtom } from "../Types/componentsTypes";
 function ButtonField({
   title,
   buttonClassName,
+  className,
   containerClassName,
   ...props
 }: CustomButtom) {
   return (
-    <View>
+    <View className={`${className ? className : ""}`}>
       <Pressable
         className={`p-4 bg-bluePrimary rounded-lg shadow-sm
           ${buttonClassName ? buttonClassName : ""}`}

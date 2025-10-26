@@ -9,7 +9,7 @@ function GameCard({
   description,
   review,
   score,
-  filePath,
+  file_path,
   onPress,
 }: IGame & { onPress?: () => void }) {
   const [stars, setStars] = useState<Record<number, boolean>>({
@@ -29,7 +29,7 @@ function GameCard({
     >
       <View className="w-[35%] border rounded-lg overflow-hidden">
         <Image
-          source={{ uri: filePath }}
+          source={{ uri: file_path }}
           className="h-full w-full rounded-lg"
           resizeMode="cover"
         />

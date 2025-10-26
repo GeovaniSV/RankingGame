@@ -35,9 +35,12 @@ export default function Register({ navigation }: any) {
       text1: "Sucesso",
       text2: "Usuário cadastrado com sucesso",
     });
+
     if ("error" in user!) {
       handleErrors(user.error);
       return;
+    } else {
+      navigation.navigate("Login");
     }
 
     setUser(user!);

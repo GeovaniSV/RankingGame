@@ -10,6 +10,7 @@ interface CustomButtom extends ButtonProps {
   title: string;
   containerClassName?: string;
   buttonClassName?: string;
+  className?: string;
 }
 
 interface CustomTitleRankingGame {

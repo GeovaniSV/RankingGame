@@ -28,7 +28,6 @@ export default function Home({ navigation }: any) {
 
   useEffect(() => {
     getGameFromAPI();
-    console.log(games);
   }, []);
   return (
     <View className="flex-1 bg-backgroundGray pt-10">
@@ -42,12 +41,14 @@ export default function Home({ navigation }: any) {
         data={games}
         keyExtractor={(item) => item.id!.toString()}
         renderItem={({ item }) => (
-          <GameCard
-            review={item.review}
-            score={item.score}
-            filePath={item.filePath}
-            onPress={() => navigation.navigate("Game", { gameId: item.id })}
-          />
+          <>
+            <GameCard
+              review={item.review}
+              score={item.score}
+              file_path={item.file_path}
+              onPress={() => navigation.navigate("Game", { gameId: item.id })}
+            />
+          </>
         )}
         contentContainerStyle={{
           paddingHorizontal: 20,
