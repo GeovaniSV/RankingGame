@@ -42,4 +42,12 @@ const getGames = async () => {
   }
 };
 
-export { postGame, getGames };
+const getUniqueGame = async (id: number) => {
+  const token = await getDataString("token");
+  const response = await api.get(`/games/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export { postGame, getGames, getUniqueGame };

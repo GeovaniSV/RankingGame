@@ -2,7 +2,7 @@ import Login from "../Screens/Login";
 import Register from "../Screens/Register";
 import Home from "../Screens/Home";
 import NewGame from "../Screens/NewGame";
-import Game from "../Screens/Game";
+import GameDetails from "../Screens/GameDetails";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -15,7 +15,7 @@ function MyStack() {
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="NewGame" component={NewGame} />
-      <Stack.Screen name="Game" component={Game} />
+      <Stack.Screen name="Game" component={GameDetails} />
     </Stack.Navigator>
   );
 }

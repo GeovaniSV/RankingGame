@@ -6,7 +6,7 @@ import {
   Image,
   TextInputChangeEvent,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 //components
@@ -15,8 +15,13 @@ import { ButtonField } from "../Components/ButtonField";
 import { TitleRankingGame } from "../Components/TitleRankingGame";
 import { postGame } from "../Services/gameFunctions";
 
+//functions
+import { storeDataString } from "../utils/asyncStorage";
+import { saveBase64ImageToFile } from "../utils/imagesFunction";
+
 //types/intefaces
 import { IGame } from "../Types/gameTypes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewGame({ navigation }: any) {
   const [image, setImage] = useState<string | null>(null);
@@ -47,12 +52,31 @@ export default function NewGame({ navigation }: any) {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
+      base64: true,
     });
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      setInputValues({ ...inputValues, filePath: result.assets[0].uri! });
-    }
+    if (result.canceled) return;
+
+    const imagePicked = result.assets[0];
+    const imageBase64 = imagePicked.base64;
+    const fileName = imagePicked.fileName || `image_${Date.now()}.jpg`;
+    const absoluteUri = imagePicked.uri;
+    const mimeType = imagePicked.mimeType;
+    const file = imagePicked.file;
+
+    console.log("File: ", file);
+
+    await storeDataString(fileName, imageBase64!);
+
+    const filePath = await saveBase64ImageToFile(
+      fileName,
+      absoluteUri,
+      mimeType!
+    );
+
+    setInputValues({ ...inputValues, filePath: filePath! });
+
+    setImage(result.assets[0].uri);
   };
 
   const handleStars = (value: number) => {
@@ -72,6 +96,7 @@ export default function NewGame({ navigation }: any) {
       return newStars;
     });
 
+    console.log(inputValues);
     setInputValues({ ...inputValues, score: value });
   };
 
