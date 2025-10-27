@@ -4,7 +4,7 @@ interface IGame {
   description?: string;
   review: string;
   score: number;
-  file_path?: string;
+  filePath?: string;
 }
 
 export { IGame };

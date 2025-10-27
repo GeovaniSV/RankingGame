@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { IGame } from "../Types/gameTypes";
 import { getDataString } from "../utils/asyncStorage";
 import { api } from "./api";
@@ -7,13 +8,16 @@ const postGame = async ({
   description,
   review,
   score,
-  file_path,
+  filePath,
 }: IGame) => {
   try {
     const token = await getDataString("token");
     const hasName = name ? name : null;
     const hasDescription = description ? description : null;
-    const hasfile_path = file_path ? file_path : null;
+    const hasfilePath = filePath ? filePath : null;
+    console.log("gameFunction: ", filePath);
+
+    console.log("hasFilePaths:", hasfilePath);
     await api.post(
       "/games",
       {
@@ -21,13 +25,20 @@ const postGame = async ({
         description: hasDescription,
         review,
         score,
-        file_path: hasfile_path,
+        filePath: hasfilePath,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     console.log("passei aqui");
   } catch (error) {
-    console.log(error);
+    if (error instanceof AxiosError) {
+      const { status, code } = error;
+      const errorMap: Record<number, AxiosError> = {
+        422: error.response?.data.errors,
+      };
+      console.log(errorMap[status!]);
+      return { error: errorMap[status!] };
+    }
   }
 };
 

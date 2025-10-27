@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, Image, Pressable } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IGame } from "../Types/gameTypes";
 
 function GameCard({
@@ -9,7 +9,7 @@ function GameCard({
   description,
   review,
   score,
-  file_path,
+  filePath,
   onPress,
 }: IGame & { onPress?: () => void }) {
   const [stars, setStars] = useState<Record<number, boolean>>({
@@ -20,6 +20,29 @@ function GameCard({
     5: false,
   });
 
+  const handleScore = () => {
+    if (score) {
+      setStars((prevStars) => {
+        const newStars: Record<number, boolean> = { ...prevStars };
+
+        if (prevStars[score] == false) {
+          for (let i = 1; i <= score; i++) {
+            newStars[i] = true;
+          }
+        } else {
+          for (let i = score + 1; i <= 5; i++) {
+            newStars[i] = false;
+          }
+        }
+
+        return newStars;
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleScore();
+  }, []);
   return (
     <Pressable
       onPress={onPress}
@@ -29,13 +52,13 @@ function GameCard({
     >
       <View className="w-[35%] border rounded-lg overflow-hidden">
         <Image
-          source={{ uri: file_path }}
+          source={{ uri: filePath }}
           className="h-full w-full rounded-lg"
           resizeMode="cover"
         />
       </View>
 
-      <View className="flex-1 items-center p-1">
+      <View className=" flex-1 items-center p-1">
         <View className="flex-row">
           <Ionicons
             name={stars[1] == false ? "star-outline" : "star"}
@@ -58,7 +81,9 @@ function GameCard({
             size={28}
           />
         </View>
-        <Text className="text-clip">{review}</Text>
+        <View className="flex-1 w-full items-center justify-center">
+          <Text>{review}</Text>
+        </View>
       </View>
     </Pressable>
   );

@@ -6,7 +6,7 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 //functions
 import { getGames } from "../Services/gameFunctions";
@@ -17,6 +17,7 @@ import { TitleRankingGame } from "../Components/TitleRankingGame";
 //types/interfaces
 import { IGame } from "../Types/gameTypes";
 import { GameCard } from "../Components/GameCard";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Home({ navigation }: any) {
   const [games, setGames] = useState<IGame[]>([]);
@@ -26,9 +27,12 @@ export default function Home({ navigation }: any) {
     setGames(response.data);
   };
 
-  useEffect(() => {
-    getGameFromAPI();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getGameFromAPI();
+    }, [])
+  );
+
   return (
     <View className="flex-1 bg-backgroundGray pt-10">
       <TitleRankingGame
@@ -45,7 +49,7 @@ export default function Home({ navigation }: any) {
             <GameCard
               review={item.review}
               score={item.score}
-              file_path={item.file_path}
+              filePath={item.file_path}
               onPress={() => navigation.navigate("Game", { gameId: item.id })}
             />
           </>

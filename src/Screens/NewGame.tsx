@@ -23,7 +23,11 @@ import { saveBase64ImageToFile } from "../utils/imagesFunction";
 import { IGame } from "../Types/gameTypes";
 
 export default function NewGame({ navigation }: any) {
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState({
+    fileName: "",
+    fileUri: "",
+    mimeType: "",
+  });
   const [inputValues, setInputValues] = useState({
     name: "",
     description: "",
@@ -64,15 +68,15 @@ export default function NewGame({ navigation }: any) {
 
     await storeDataString(fileName, imageBase64!);
 
-    const filePath = await saveBase64ImageToFile(
-      fileName,
-      absoluteUri,
-      mimeType!
-    );
+    const filePath = await saveBase64ImageToFile(fileName);
 
     setInputValues({ ...inputValues, filePath: filePath! });
 
-    setImage(result.assets[0].uri);
+    setImage({
+      fileName: fileName,
+      fileUri: absoluteUri,
+      mimeType: mimeType!,
+    });
   };
 
   const handleStars = (value: number) => {
@@ -97,8 +101,11 @@ export default function NewGame({ navigation }: any) {
   };
 
   const createCard = async () => {
-    await postGame(inputValues);
-    navigation.navigate("Home");
+    console.log(inputValues.filePath);
+    if (inputValues.filePath != "") {
+      await postGame(inputValues);
+      navigation.navigate("Home");
+    }
   };
 
   return (
@@ -115,15 +122,15 @@ export default function NewGame({ navigation }: any) {
         </Text>
 
         <View className="flex-1 justify-center">
-          {!image ? (
+          {!image.fileUri ? (
             <ButtonField title="Escolha uma imagem" onPress={pickImage} />
           ) : (
             <TouchableOpacity
-              className="w-[50%] h-[75%] mx-auto "
+              className="w-[50%] h-[60%] mx-auto "
               onPress={pickImage}
             >
               <Image
-                source={{ uri: image }}
+                source={{ uri: image.fileUri }}
                 className="w-full h-full mx-auto rounded-lg"
               />
             </TouchableOpacity>

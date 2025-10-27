@@ -31,17 +31,41 @@ export default function Game({ navigation }: any) {
     }
   };
 
+  const handleScore = () => {
+    if (gameDetail) {
+      setStars((prevStars) => {
+        const newStars: Record<number, boolean> = { ...prevStars };
+
+        if (prevStars[gameDetail.score] == false) {
+          for (let i = 1; i <= gameDetail.score; i++) {
+            newStars[i] = true;
+          }
+        } else {
+          for (let i = gameDetail.score + 1; i <= 5; i++) {
+            newStars[i] = false;
+          }
+        }
+
+        return newStars;
+      });
+    }
+  };
+
   const deleteGameDetail = async () => {
-    await deleteGame(gameDetail?.id!);
-    navigation.goBack();
+    const deleted = await deleteGame(gameDetail?.id!);
+
+    if (deleted) {
+      navigation.navigate("Home", { refresh: true });
+    }
   };
 
   useEffect(() => {
     getGame();
+    handleScore();
   }, []);
 
   return (
-    <View className="flex-1 pt-10 pb-10 justify-center items-center">
+    <View className="flex-1 pt-10 pb-10 justify-center items-center bg-backgroundGray">
       <View className={`flex items-center justify-center mb-10`}>
         <View className="flex-row items-end">
           <Text className={`font-jaini text-6xl`}>
@@ -52,7 +76,7 @@ export default function Game({ navigation }: any) {
           </Text>
         </View>
       </View>
-      <View className="flex w-[80%] h-[30%] mb-5">
+      <View className="flex w-[50%] h-[25%] mb-5">
         <Image
           source={{ uri: gameDetail?.filePath }}
           className="w-full h-full mx-auto rounded-lg"

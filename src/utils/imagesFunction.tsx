@@ -2,16 +2,8 @@ import * as FileSystem from "expo-file-system/legacy";
 import { getDataString } from "./asyncStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const saveBase64ImageToFile = async (
-  fileName: string,
-  absoluteUri: any,
-  mimeType: string
-) => {
+const saveBase64ImageToFile = async (fileName: string) => {
   try {
-    console.log("FileName: ", fileName);
-    console.log("Absolute URI: ", absoluteUri);
-    console.log("MimeType: ", mimeType);
-
     const base64Image = await getDataString(fileName);
     if (!base64Image) {
       console.log("Imagem não encontrada no AsyncStorage");
@@ -20,7 +12,7 @@ const saveBase64ImageToFile = async (
 
     const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, "");
 
-    const dirPath = FileSystem.documentDirectory + "ranking-game-photos";
+    const dirPath = FileSystem.documentDirectory + "ranking-game-photos/";
     await FileSystem.makeDirectoryAsync(dirPath, { intermediates: true });
 
     const filePath = dirPath + fileName;
