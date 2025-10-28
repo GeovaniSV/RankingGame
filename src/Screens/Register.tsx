@@ -2,6 +2,8 @@ import Toast from "react-native-toast-message";
 import { useState } from "react";
 import { TextInputChangeEvent, View } from "react-native";
 import { IUserRegister } from "../Types/userTypes";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 //components
 import { TextInputField } from "../Components/TextInputField";
@@ -80,55 +82,69 @@ export default function Register({ navigation }: any) {
   };
 
   return (
-    <View className="flex-1 justify-center items-center bg-backgroundGray">
-      <View className="flex justify-between items-center h-4/5 w-[90%]">
-        <TitleRankingGame />
+    <SafeAreaView className="flex-1 bg-backgroundGray" edges={["bottom"]}>
+      <KeyboardAwareScrollView
+        className="flex-1"
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        extraScrollHeight={30}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="flex-1 justify-center items-center bg-backgroundGray">
+          <View className="flex justify-between items-center h-4/5 w-[90%]">
+            <TitleRankingGame />
 
-        <View className="justify-center gap-12 p-8 w-full">
-          <TextInputField
-            label="Nome completo"
-            placeholder="Digite seu nome"
-            value={inputValues.fullName}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, fullName: e.nativeEvent.text })
-            }
-            onFocus={() => setErrors({ ...errors, fullName: "" })}
-            error={errors.fullName ?? errors.fullName}
-          />
-          <TextInputField
-            label="Email"
-            placeholder="Digite seu email"
-            autoCorrect={false}
-            value={inputValues.email}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({
-                ...inputValues,
-                email: e.nativeEvent.text.toLowerCase(),
-              })
-            }
-            autoCapitalize="none"
-            onFocus={() => setErrors({ ...errors, email: "" })}
-            error={errors.email ?? errors.email}
-          />
-          <TextInputField
-            label="Senha"
-            placeholder="Digite sua senha"
-            autoCorrect={false}
-            secureTextEntry
-            value={inputValues.password}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({
-                ...inputValues,
-                password: e.nativeEvent.text.toLowerCase(),
-              })
-            }
-            autoCapitalize="none"
-            onFocus={() => setErrors({ ...errors, password: "" })}
-            error={errors.password ?? errors.password}
-          />
-          <ButtonField title="Cadastrar" onPress={createUser} />
+            <View className="justify-center gap-12 p-8 w-full">
+              <TextInputField
+                label="Nome completo"
+                placeholder="Digite seu nome"
+                value={inputValues.fullName}
+                onChange={(e: TextInputChangeEvent) =>
+                  setInputValues({
+                    ...inputValues,
+                    fullName: e.nativeEvent.text,
+                  })
+                }
+                onFocus={() => setErrors({ ...errors, fullName: "" })}
+                error={errors.fullName ?? errors.fullName}
+              />
+              <TextInputField
+                label="Email"
+                placeholder="Digite seu email"
+                autoCorrect={false}
+                value={inputValues.email}
+                onChange={(e: TextInputChangeEvent) =>
+                  setInputValues({
+                    ...inputValues,
+                    email: e.nativeEvent.text.toLowerCase(),
+                  })
+                }
+                autoCapitalize="none"
+                onFocus={() => setErrors({ ...errors, email: "" })}
+                error={errors.email ?? errors.email}
+              />
+              <TextInputField
+                label="Senha"
+                placeholder="Digite sua senha"
+                autoCorrect={false}
+                secureTextEntry
+                value={inputValues.password}
+                onChange={(e: TextInputChangeEvent) =>
+                  setInputValues({
+                    ...inputValues,
+                    password: e.nativeEvent.text.toLowerCase(),
+                  })
+                }
+                autoCapitalize="none"
+                onFocus={() => setErrors({ ...errors, password: "" })}
+                error={errors.password ?? errors.password}
+              />
+              <ButtonField title="Cadastrar" onPress={createUser} />
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }

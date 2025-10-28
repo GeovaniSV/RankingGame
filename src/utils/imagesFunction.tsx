@@ -22,8 +22,6 @@ const saveBase64ImageToFile = async (fileName: string) => {
 
     await AsyncStorage.removeItem(fileName);
 
-    console.log(filePath);
-
     return filePath;
   } catch (error) {
     console.error("Erro ao salvar imagem:", error);

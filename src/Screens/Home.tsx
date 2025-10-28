@@ -6,7 +6,7 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 //functions
 import { getGames } from "../Services/gameFunctions";

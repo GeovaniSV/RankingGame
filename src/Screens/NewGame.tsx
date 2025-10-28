@@ -6,8 +6,10 @@ import {
   Image,
   TextInputChangeEvent,
 } from "react-native";
-import { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 //components
 import { TextInputField } from "../Components/TextInputField";
@@ -21,6 +23,7 @@ import { saveBase64ImageToFile } from "../utils/imagesFunction";
 
 //types/intefaces
 import { IGame } from "../Types/gameTypes";
+import Toast from "react-native-toast-message";
 
 export default function NewGame({ navigation }: any) {
   const [image, setImage] = useState({
@@ -66,6 +69,15 @@ export default function NewGame({ navigation }: any) {
     const absoluteUri = imagePicked.uri;
     const mimeType = imagePicked.mimeType;
 
+    if (mimeType === "image/svg+xml") {
+      Toast.show({
+        type: "error",
+        text1: "Formato não suportado",
+        text2: "Imagens SVG não são suportadas. Envie JPG, PNG ou WEBP.",
+      });
+      return;
+    }
+
     await storeDataString(fileName, imageBase64!);
 
     const filePath = await saveBase64ImageToFile(fileName);
@@ -96,7 +108,6 @@ export default function NewGame({ navigation }: any) {
       return newStars;
     });
 
-    console.log(inputValues);
     setInputValues({ ...inputValues, score: value });
   };
 
@@ -109,96 +120,118 @@ export default function NewGame({ navigation }: any) {
   };
 
   return (
-    <View className="flex-1 bg-backgroundGray rounded-2xl p-5">
-      <TitleRankingGame
-        firstLetterSize="text-4xl"
-        textSize="text-2xl"
-        className="top-0"
-      />
+    <SafeAreaView className="flex-1 bg-backgroundGray" edges={["top"]}>
+      <KeyboardAwareScrollView
+        className="flex-1"
+        contentContainerStyle={{ padding: 20 }}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <TitleRankingGame
+          firstLetterSize="text-4xl"
+          textSize="text-2xl"
+          className="top-0"
+        />
 
-      <View className="mt-3 h-[80%]">
-        <Text className="text-sm font-thin">
-          Campos marcados com * são obrigatórios
-        </Text>
+        <View className="mt-3">
+          <Text className="text-sm font-thin">
+            Campos marcados com * são obrigatórios
+          </Text>
 
-        <View className="flex-1 justify-center">
-          {!image.fileUri ? (
-            <ButtonField title="Escolha uma imagem" onPress={pickImage} />
-          ) : (
-            <TouchableOpacity
-              className="w-[50%] h-[60%] mx-auto "
-              onPress={pickImage}
-            >
-              <Image
-                source={{ uri: image.fileUri }}
-                className="w-full h-full mx-auto rounded-lg"
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-
-        <View>
-          <TextInputField
-            label="Jogo*"
-            placeholder="Digite o nome do jogo"
-            value={inputValues.name}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, name: e.nativeEvent.text })
-            }
-          />
-
-          <TextInputField
-            label="Review*"
-            placeholder="Digite o que achou do jogo"
-            value={inputValues.review}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({ ...inputValues, review: e.nativeEvent.text })
-            }
-          />
-
-          <View className="flex mb-5">
-            <Text className="text-sm font-semibold ">Nota*</Text>
-            <View className="flex-row justify-around items-center">
-              <TouchableOpacity onPress={() => handleStars(1)}>
-                <Ionicons
-                  name={stars[1] == false ? "star-outline" : "star"}
-                  size={38}
+          <View className="justify-center my-4">
+            {!image.fileUri ? (
+              <TouchableOpacity
+                className="bg-gray-300 w-1/2 py-10 mx-auto rounded-lg flex justify-center items-center shadow"
+                onPress={pickImage}
+              >
+                <View className="border-hairline border-dashed flex justify-center items-center">
+                  <MaterialCommunityIcons
+                    name="file-image-plus-outline"
+                    color={"#a9a9a9"}
+                    size={100}
+                  />
+                </View>
+                <Text>photo.jpg</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                className="w-1/2 aspect-square mx-auto"
+                onPress={pickImage}
+              >
+                <Image
+                  source={{ uri: image.fileUri }}
+                  className="w-full h-full mx-auto rounded-lg"
                 />
               </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => handleStars(2)}>
-                <Ionicons
-                  name={stars[2] == false ? "star-outline" : "star"}
-                  size={38}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => handleStars(3)}>
-                <Ionicons
-                  name={stars[3] == false ? "star-outline" : "star"}
-                  size={38}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => handleStars(4)}>
-                <Ionicons
-                  name={stars[4] == false ? "star-outline" : "star"}
-                  size={38}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => handleStars(5)}>
-                <Ionicons
-                  name={stars[5] == false ? "star-outline" : "star"}
-                  size={38}
-                />
-              </TouchableOpacity>
-            </View>
+            )}
           </View>
 
-          <ButtonField title="Enviar" onPress={createCard} />
+          <View>
+            <TextInputField
+              label="Jogo*"
+              placeholder="Digite o nome do jogo"
+              value={inputValues.name}
+              onChange={(e: TextInputChangeEvent) =>
+                setInputValues({ ...inputValues, name: e.nativeEvent.text })
+              }
+            />
+
+            <TextInputField
+              label="Review*"
+              placeholder="Digite o que achou do jogo"
+              value={inputValues.review}
+              onChange={(e: TextInputChangeEvent) =>
+                setInputValues({ ...inputValues, review: e.nativeEvent.text })
+              }
+            />
+
+            <View className="flex mb-5">
+              <Text className="text-sm font-semibold">Nota*</Text>
+              <View className="flex-row justify-around items-center">
+                <TouchableOpacity onPress={() => handleStars(1)}>
+                  <Ionicons
+                    name={stars[1] == false ? "star-outline" : "star"}
+                    size={38}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => handleStars(2)}>
+                  <Ionicons
+                    name={stars[2] == false ? "star-outline" : "star"}
+                    size={38}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => handleStars(3)}>
+                  <Ionicons
+                    name={stars[3] == false ? "star-outline" : "star"}
+                    size={38}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => handleStars(4)}>
+                  <Ionicons
+                    name={stars[4] == false ? "star-outline" : "star"}
+                    size={38}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => handleStars(5)}>
+                  <Ionicons
+                    name={stars[5] == false ? "star-outline" : "star"}
+                    size={38}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <ButtonField title="Enviar" onPress={createCard} />
+          </View>
         </View>
-      </View>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }

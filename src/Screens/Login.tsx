@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   TextInputChangeEvent,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 //components
 import { TextInputField } from "../Components/TextInputField";
@@ -75,49 +77,60 @@ export default function Login({ navigation }: any) {
   };
 
   return (
-    <View className="flex-1 justify-center items-center bg-backgroundGray">
-      <View className="flex justify-between items-center h-4/5 w-[90%]">
-        <TitleRankingGame />
+    <SafeAreaView className="flex-1 bg-backgroundGray">
+      <KeyboardAwareScrollView
+        className="flex-1"
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="flex-1 justify-center items-center bg-backgroundGray">
+          <View className="flex justify-between items-center h-4/5 w-[90%]">
+            <TitleRankingGame />
 
-        <View className="justify-center gap-12 p-8 w-full">
-          <TextInputField
-            label="Email"
-            placeholder="Digite seu email"
-            value={inputValues.email}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({
-                ...inputValues,
-                email: e.nativeEvent.text.toLowerCase(),
-              })
-            }
-            autoCapitalize="none"
-            onFocus={() => setErrors({ ...errors, email: "" })}
-            error={errors.email ?? errors.email}
-          />
-          <TextInputField
-            label="Senha"
-            placeholder="Digite sua senha"
-            value={inputValues.password}
-            onChange={(e: TextInputChangeEvent) =>
-              setInputValues({
-                ...inputValues,
-                password: e.nativeEvent.text.toLowerCase(),
-              })
-            }
-            autoCapitalize="none"
-            secureTextEntry
-            error={errors.password ?? errors.password}
-            onFocus={() => setErrors({ ...errors, password: "" })}
-          />
-          <ButtonField title="Entrar" onPress={login} />
-        </View>
+            <View className="justify-center gap-12 p-8 w-full">
+              <TextInputField
+                label="Email"
+                placeholder="Digite seu email"
+                value={inputValues.email}
+                onChange={(e: TextInputChangeEvent) =>
+                  setInputValues({
+                    ...inputValues,
+                    email: e.nativeEvent.text.toLowerCase(),
+                  })
+                }
+                autoCapitalize="none"
+                onFocus={() => setErrors({ ...errors, email: "" })}
+                error={errors.email ?? errors.email}
+              />
+              <TextInputField
+                label="Senha"
+                placeholder="Digite sua senha"
+                value={inputValues.password}
+                onChange={(e: TextInputChangeEvent) =>
+                  setInputValues({
+                    ...inputValues,
+                    password: e.nativeEvent.text.toLowerCase(),
+                  })
+                }
+                autoCapitalize="none"
+                secureTextEntry
+                error={errors.password ?? errors.password}
+                onFocus={() => setErrors({ ...errors, password: "" })}
+              />
+              <ButtonField title="Entrar" onPress={login} />
+            </View>
 
-        <View>
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text>Não tem uma conta? Inscreva-se já!</Text>
-          </TouchableOpacity>
+            <View>
+              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                <Text>Não tem uma conta? Inscreva-se já!</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
