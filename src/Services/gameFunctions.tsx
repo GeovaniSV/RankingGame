@@ -15,9 +15,6 @@ const postGame = async ({
     const hasName = name ? name : null;
     const hasDescription = description ? description : null;
     const hasfilePath = filePath ? filePath : null;
-    console.log("gameFunction: ", filePath);
-
-    console.log("hasFilePaths:", hasfilePath);
     await api.post(
       "/games",
       {
@@ -29,7 +26,6 @@ const postGame = async ({
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log("passei aqui");
   } catch (error) {
     if (error instanceof AxiosError) {
       const { status, code } = error;
@@ -42,15 +38,24 @@ const postGame = async ({
   }
 };
 
-const getGames = async () => {
+const getGames = async (page: number, limit: number) => {
   try {
     const token = await getDataString("token");
-    const response = await api.get("/games", {
+    const response = await api.get(`/games?page=${page}&limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log(response.data);
     return response.data.data;
   } catch (error) {
-    console.log(error);
+    if (error instanceof AxiosError) {
+      const { status, code } = error;
+      const errorMap: Record<number, AxiosError> = {
+        422: error.response?.data.errors,
+        404: error.response?.data,
+      };
+      console.log(errorMap[status!]);
+      return { error: errorMap[status!] };
+    }
   }
 };
 

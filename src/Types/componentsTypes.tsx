@@ -2,7 +2,7 @@ import { ButtonProps, TextInputProps } from "react-native";
 
 interface CustomTextInput extends TextInputProps {
   label?: string;
-  error?: string;
+  error?: string | null;
   inputClassName?: string;
 }
 

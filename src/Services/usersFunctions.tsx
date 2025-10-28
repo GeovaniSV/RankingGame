@@ -17,21 +17,28 @@ const userRegisterFunction = async ({
       password,
     });
 
+    if (user) {
+      Toast.show({
+        type: "success",
+        text1: "Sucesso",
+        text2: "Usuário cadastrado com sucesso",
+      });
+    }
+
     return user;
   } catch (error) {
     if (error instanceof AxiosError) {
       const { status, code } = error;
-      let conflictError: any = {};
+
       if (status == 409) {
-        const err = error.response?.data.Error;
-        conflictError = {
-          field: "conflict",
-          err,
-        };
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Email já cadastrado no sistema",
+        });
       }
       const errorMap: Record<number, AxiosError> = {
         422: error.response?.data.errors,
-        409: conflictError,
       };
 
       return { error: errorMap[status!] };
@@ -53,8 +60,15 @@ const userLoginFunction = async ({ email, password }: IUserLogin) => {
       const errorMap: Record<number, AxiosResponse<any, any, {}> | undefined> =
         {
           422: error.response?.data.errors,
-          400: response,
         };
+
+      if (status === 400) {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Credenciais de usuário inválidas",
+        });
+      }
 
       return { error: errorMap[status!] };
     }

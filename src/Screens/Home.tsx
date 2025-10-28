@@ -4,9 +4,10 @@ import {
   View,
   ScrollView,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 //functions
 import { getGames } from "../Services/gameFunctions";
@@ -18,20 +19,57 @@ import { TitleRankingGame } from "../Components/TitleRankingGame";
 import { IGame } from "../Types/gameTypes";
 import { GameCard } from "../Components/GameCard";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import { colors } from "../Styles/colors";
 
 export default function Home({ navigation }: any) {
   const [games, setGames] = useState<IGame[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const getGameFromAPI = async () => {
-    const response = await getGames();
-    setGames(response.data);
+  const loadGames = async (pageNum: number) => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    try {
+      const response = await getGames(pageNum, 5);
+
+      if (response.data.length === 0) {
+        setHasMore(false);
+        setLoading(false);
+        return;
+      }
+
+      if (pageNum === 1) {
+        setGames(response.data);
+        setPage(2);
+        setHasMore(!!response.meta.nextPageUrl);
+      } else {
+        setGames((prev) => [...prev, ...response.data]);
+        setPage(pageNum + 1);
+        setHasMore(!!response.meta.nextPageUrl);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
   };
 
   useFocusEffect(
     useCallback(() => {
-      getGameFromAPI();
+      setGames([]);
+      setPage(1);
+      setHasMore(true);
+      loadGames(1);
     }, [])
   );
+
+  const loadMoreGames = () => {
+    if (!loading && hasMore) {
+      loadGames(page);
+    }
+  };
 
   return (
     <View className="flex-1 bg-backgroundGray pt-10">
@@ -54,12 +92,19 @@ export default function Home({ navigation }: any) {
             />
           </>
         )}
+        onEndReached={loadMoreGames}
+        onEndReachedThreshold={0.1}
         contentContainerStyle={{
           paddingHorizontal: 20,
           paddingBottom: 100,
           gap: 1,
         }}
         showsVerticalScrollIndicator={false}
+        ListFooterComponent={
+          loading ? (
+            <ActivityIndicator size={"large"} color={colors.bluePrimary} />
+          ) : null
+        }
       />
 
       <View className="bg-backgroundGray border w-[15%] h-[7%] absolute bottom-[10%] right-[5%] flex justify-center items-center shadow-black shadow rounded-lg">

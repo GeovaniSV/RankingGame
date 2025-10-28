@@ -42,13 +42,12 @@ export default function Login({ navigation }: any) {
     }
 
     storeDataString("token", token?.data.token);
-
-    navigation.navigate("Home");
-
     setInputValues({
       email: "",
       password: "",
     });
+
+    navigation.navigate("Home");
   };
 
   const handleErrors = (value: any) => {
@@ -69,11 +68,6 @@ export default function Login({ navigation }: any) {
         [errorArray[i].field]: errorMap[errorArray[i].field],
       }));
     }
-
-    setInputValues({
-      email: "",
-      password: "",
-    });
   };
 
   return (

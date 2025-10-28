@@ -7,11 +7,15 @@ function TextInputField({
   inputClassName,
   ...props
 }: CustomTextInput) {
+  if (error == "") {
+    error = null;
+  }
+
   return (
     <View>
       <Text className="text-sm font-semibold mb-1">{label}</Text>
       <TextInput
-        className={`bg-inputGray p-4 rounded-lg shadow-sm ${error ? "border border-red-500 text-red-500" : ""}`}
+        className={`bg-inputGray p-4 rounded-lg shadow-sm ${error ? "border border-red-500 text-red-500" : " border-none text-black"}`}
         placeholder="Digite sua senha"
         {...props}
       />

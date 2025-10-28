@@ -32,13 +32,9 @@ export default function Register({ navigation }: any) {
 
   const createUser = async () => {
     const user = await userRegisterFunction(inputValues);
-    Toast.show({
-      type: "success",
-      text1: "Sucesso",
-      text2: "Usuário cadastrado com sucesso",
-    });
 
     if ("error" in user!) {
+      console.log(user.error);
       handleErrors(user.error);
       return;
     } else {
@@ -66,13 +62,6 @@ export default function Register({ navigation }: any) {
       errorArray.push(value[i]);
     }
 
-    if (value.err.status == 409) {
-      Toast.show({
-        type: "error",
-        text1: "Erro",
-        text2: "Email já cadastrado no sistema",
-      });
-    }
     for (let i = 0; i < errorArray.length; i++) {
       setErrors((prevErrors) => ({
         ...prevErrors,
