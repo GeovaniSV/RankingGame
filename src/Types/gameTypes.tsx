@@ -7,4 +7,10 @@ interface IGame {
   filePath?: string;
 }
 
-export { IGame };
+interface IGameCardPreview {
+  review: string;
+  score: number;
+  onPress: () => void;
+}
+
+export { IGame, IGameCardPreview };

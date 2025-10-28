@@ -1,3 +1,4 @@
+import Toast from "react-native-toast-message";
 import {
   Text,
   TouchableOpacity,
@@ -8,19 +9,19 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { colors } from "../Styles/colors";
 
 //functions
 import { getGames } from "../Services/gameFunctions";
 
 //components
 import { TitleRankingGame } from "../Components/TitleRankingGame";
+import { GameCardPreview } from "../Components/GameCardPreview";
 
 //types/interfaces
 import { IGame } from "../Types/gameTypes";
 import { GameCard } from "../Components/GameCard";
-import { useFocusEffect } from "@react-navigation/native";
-import Toast from "react-native-toast-message";
-import { colors } from "../Styles/colors";
 
 export default function Home({ navigation }: any) {
   const [games, setGames] = useState<IGame[]>([]);
@@ -29,31 +30,30 @@ export default function Home({ navigation }: any) {
   const [loading, setLoading] = useState(false);
 
   const loadGames = async (pageNum: number) => {
-    if (loading || !hasMore) return;
+    if (loading || !hasMore) {
+      return;
+    }
 
-    setLoading(true);
     try {
       const response = await getGames(pageNum, 5);
 
-      if (response.data.length === 0) {
-        setHasMore(false);
-        setLoading(false);
-        return;
-      }
-
       if (pageNum === 1) {
         setGames(response.data);
-        setPage(2);
-        setHasMore(!!response.meta.nextPageUrl);
       } else {
         setGames((prev) => [...prev, ...response.data]);
+      }
+
+      if (response.meta.nextPageUrl && response.data.length > 0) {
         setPage(pageNum + 1);
-        setHasMore(!!response.meta.nextPageUrl);
+        setHasMore(true);
+      } else {
+        setHasMore(false);
       }
     } catch (error) {
-      console.error(error);
+      setHasMore(false);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useFocusEffect(
@@ -61,7 +61,9 @@ export default function Home({ navigation }: any) {
       setGames([]);
       setPage(1);
       setHasMore(true);
-      loadGames(1);
+      setTimeout(() => {
+        loadGames(1);
+      }, 100);
     }, [])
   );
 
@@ -103,6 +105,15 @@ export default function Home({ navigation }: any) {
         ListFooterComponent={
           loading ? (
             <ActivityIndicator size={"large"} color={colors.bluePrimary} />
+          ) : null
+        }
+        ListEmptyComponent={
+          !loading ? (
+            <GameCardPreview
+              review="Nenhum card ainda, crie um clicando aqui, ou no botão abaixo!"
+              score={5}
+              onPress={() => navigation.navigate("NewGame")}
+            />
           ) : null
         }
       />
