@@ -43,7 +43,7 @@ function GameCardPreview({ review, score, onPress }: IGameCardPreview) {
   return (
     <Pressable
       onPress={onPress}
-      className="border w-full rounded-2xl flex-row p-2 mb-3"
+      className="border w-full rounded-2xl flex-row p-2 mb-3 shadow shadow-black bg-backgroundGray"
       style={{ height: 120 }}
       android_ripple={{ color: "#ccc" }}
     >
