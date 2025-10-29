@@ -11,7 +11,7 @@ function ButtonField({
   return (
     <View className={`${className ? className : ""}`}>
       <Pressable
-        className={`p-4 bg-bluePrimary rounded-lg shadow-sm
+        className={`${containerClassName ? containerClassName : "p-4"} bg-bluePrimary rounded-sm shadow-sm
           ${buttonClassName ? buttonClassName : ""}`}
         {...props}
       >

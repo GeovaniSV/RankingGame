@@ -44,7 +44,6 @@ const getGames = async (page: number, limit: number) => {
     const response = await api.get(`/games?page=${page}&limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -53,7 +52,6 @@ const getGames = async (page: number, limit: number) => {
         422: error.response?.data.errors,
         404: error.response?.data,
       };
-      console.log(errorMap[status!]);
       return { error: errorMap[status!] };
     }
   }
@@ -65,9 +63,17 @@ const getUniqueGame = async (id: number) => {
     const response = await api.get(`/games/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response;
+    return response.data;
   } catch (error) {
-    console.log(error);
+    if (error instanceof AxiosError) {
+      const { status, code } = error;
+      const errorMap: Record<number, AxiosError> = {
+        422: error.response?.data.errors,
+        404: error.response?.data,
+      };
+      console.log(errorMap[status!]);
+      return { error: errorMap[status!] };
+    }
   }
 };
 

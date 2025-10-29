@@ -181,7 +181,7 @@ export default function NewGame({ navigation }: any) {
 
             <TextInputField
               label="Review*"
-              placeholder="Digite o que achou do jogo"
+              placeholder="Digite o que você achou desse game"
               value={inputValues.review}
               onChange={(e: TextInputChangeEvent) =>
                 setInputValues({ ...inputValues, review: e.nativeEvent.text })
