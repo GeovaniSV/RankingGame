@@ -47,7 +47,6 @@ function GameCard({
     <Pressable
       onPress={onPress}
       className="border w-full rounded-2xl flex-row p-2 mb-3 shadow shadow-black bg-backgroundGray"
-      style={{ height: 120 }}
       android_ripple={{ color: "#ccc" }}
     >
       <View className="w-[35%] border rounded-lg overflow-hidden">

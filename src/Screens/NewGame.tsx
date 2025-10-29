@@ -112,7 +112,6 @@ export default function NewGame({ navigation }: any) {
   };
 
   const createCard = async () => {
-    console.log(inputValues.filePath);
     if (inputValues.filePath != "") {
       await postGame(inputValues);
       navigation.navigate("Home");

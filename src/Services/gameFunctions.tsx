@@ -32,7 +32,7 @@ const postGame = async ({
       const errorMap: Record<number, AxiosError> = {
         422: error.response?.data.errors,
       };
-      console.log(errorMap[status!]);
+
       return { error: errorMap[status!] };
     }
   }
@@ -71,7 +71,7 @@ const getUniqueGame = async (id: number) => {
         422: error.response?.data.errors,
         404: error.response?.data,
       };
-      console.log(errorMap[status!]);
+
       return { error: errorMap[status!] };
     }
   }
