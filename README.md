@@ -99,4 +99,4 @@ A tela Home utiliza uma `FlatList` que carrega as reviews da API conforme o usu�
 A API então poderá retornar duas respostas: 
 - Reviews: caso a API ainda não tenha retornado todas as reviews, ela retornará mais 5 nesse processo, carregando a tela Home com mais 5 cards.
 
-- 404: caso a API não tenha mais reviews para retornar, ela retorna o código `404 - Not Found` assim o APP entender que não há mais reviews a serem carregadas.
+- 404: caso a API não tenha mais reviews para retornar, ela retorna o código `404 - Not Found` assim o APP entende que não há mais reviews a serem carregadas.
