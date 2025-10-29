@@ -10,11 +10,7 @@ Esse README será utilizado como base de documentação, onde será explicado o 
 
 
 ## Objetivos do sistema
-O principal objetivo do Ranking Game App, é a possibilidade de criar uma card com a avaliação do usuário dentro do contexto de jogos. Para isso o usuário precisa inserir a foto, o nome do jogo, seu comentário e a nota que o jogo irá receber, assim como está marcado na foto abaixo:
-
-<picture>
- <img alt="Mostra uma imagem da tela de criação de jogos, com os campos para selecionar uma foto, input para digitar o nome do jogo, input para digitar sua avaliação sobre o jogo, cinco estrelas que representam a nota do jogo e um botão azul escrito 'Enviar'" src="./public/NewGameScreen.jpg">
-</picture>
+O principal objetivo do Ranking Game App, é a possibilidade de criar uma card com a avaliação do usuário dentro do contexto de jogos. Para isso o usuário precisa inserir a foto, o nome do jogo, seu comentário e a nota que o jogo irá receber.
 
 Esse card não será publicado pois a aplicação é somente para uso local, onde você terá os dados guardados na API somente para fins de segurança. Isso faz com que não tenhamos a necessidade de enviar as fotos para um serviço de armazenamento online, a imagem é adicionada ao Sistema de Arquivos do próprio aparelho e a aplicação salva no banco de dados apenas a URI da imagem.   
 
