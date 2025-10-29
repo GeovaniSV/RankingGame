@@ -39,6 +39,7 @@ const userRegisterFunction = async ({
       }
       const errorMap: Record<number, AxiosError> = {
         422: error.response?.data.errors,
+        409: error.response?.data.Error,
       };
 
       return { error: errorMap[status!] };

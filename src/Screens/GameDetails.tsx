@@ -27,10 +27,6 @@ export default function Game({ navigation }: any) {
   const getGame = async () => {
     const game = await getUniqueGame(gameId);
 
-    if ("error" in game!) {
-      console.log(game.error);
-    }
-
     if (!game) {
       Toast.show({
         type: "error",
@@ -44,11 +40,7 @@ export default function Game({ navigation }: any) {
   };
 
   const handleScore = () => {
-    console.log("Cheguei");
-    console.log(gameDetail);
     if (gameDetail) {
-      console.log(gameDetail);
-      console.log();
       setStars((prevStars) => {
         const newStars: Record<number, boolean> = { ...prevStars };
 

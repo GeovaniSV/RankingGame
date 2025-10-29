@@ -34,7 +34,6 @@ export default function Register({ navigation }: any) {
     const user = await userRegisterFunction(inputValues);
 
     if ("error" in user!) {
-      console.log(user.error);
       handleErrors(user.error);
       return;
     } else {
@@ -51,7 +50,7 @@ export default function Register({ navigation }: any) {
   };
 
   const handleErrors = (value: any) => {
-    const errorMap: Record<string, string> = {
+    const errorMap: Record<string | number, string> = {
       fullName: "Campo NOME COMPLETO deve ser preenchido",
       email: "O campo EMAIL deve ser preenchido com um email válido",
       password: "Campo SENHA deve ser preenchido",
@@ -67,6 +66,10 @@ export default function Register({ navigation }: any) {
         ...prevErrors,
         [errorArray[i].field]: errorMap[errorArray[i].field],
       }));
+    }
+
+    if (value.status === 409) {
+      setErrors({ ...errors, email: "Email já cadastrado no sistema" });
     }
   };
 
