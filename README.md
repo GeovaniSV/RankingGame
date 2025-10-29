@@ -88,7 +88,7 @@ Essa é a tela onde podemos cadastrar um usuário novo no sistema, serão necess
 
 - Caso o email do usuário não seja válido, o sistema irá enviar uma mensagem de erro com o código `422 - Unprocessable Entity` informando que o email não é válido.
 
-- Caso o email do preenchido já esteja registrado no sistema, será retornado o código `409 - Conflict` informando que o usuário já está cadastrado no sistema
+- Caso o email preenchido já esteja registrado no sistema, será retornado o código `409 - Conflict` informando que o usuário já está cadastrado no sistema
 
 ### Tela Home
 
