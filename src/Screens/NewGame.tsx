@@ -24,6 +24,7 @@ import { saveBase64ImageToFile } from "../utils/imagesFunction";
 //types/intefaces
 import { IGame } from "../Types/gameTypes";
 import Toast from "react-native-toast-message";
+import { EmptyFieldError } from "../Types/apiErrorsTypes";
 
 export default function NewGame({ navigation }: any) {
   const [image, setImage] = useState({
@@ -38,6 +39,11 @@ export default function NewGame({ navigation }: any) {
     score: 1,
     filePath: "",
   });
+  const [errors, setErrors] = useState({
+    name: "",
+    review: "",
+    filePath: "",
+  });
   const [stars, setStars] = useState<Record<number, boolean>>({
     1: true,
     2: false,
@@ -47,6 +53,7 @@ export default function NewGame({ navigation }: any) {
   });
 
   const pickImage = async () => {
+    setErrors({ ...errors, filePath: "" });
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
       alert("Precisamos de permissão para acessar suas fotos!");
@@ -112,9 +119,33 @@ export default function NewGame({ navigation }: any) {
   };
 
   const createCard = async () => {
-    if (inputValues.filePath != "") {
-      await postGame(inputValues);
+    const response = await postGame(inputValues);
+    console.log(response);
+    if ("error" in response!) {
+      handleErrors(response.error);
+      console.log(response.error);
+    } else {
       navigation.navigate("Home");
+    }
+  };
+
+  const handleErrors = (value: any) => {
+    const errorMap: Record<string | number, string> = {
+      name: "O campo NOME deve ser preenchido",
+      review: "O campo Review deve ser preenchido",
+      filePath: "Uma imagem deve ser selecionada",
+    };
+
+    let errorArray: EmptyFieldError = [];
+    for (let i = 0; i < value.length; i++) {
+      errorArray.push(value[i]);
+    }
+
+    for (let i = 0; i < errorArray.length; i++) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [errorArray[i].field]: errorMap[errorArray[i].field],
+      }));
     }
   };
 
@@ -142,19 +173,24 @@ export default function NewGame({ navigation }: any) {
 
           <View className="justify-center my-4">
             {!image.fileUri ? (
-              <TouchableOpacity
-                className="bg-gray-300 w-1/2 py-10 mx-auto rounded-lg flex justify-center items-center shadow"
-                onPress={pickImage}
-              >
-                <View className="border-hairline border-dashed flex justify-center items-center">
-                  <MaterialCommunityIcons
-                    name="file-image-plus-outline"
-                    color={"#a9a9a9"}
-                    size={100}
-                  />
-                </View>
-                <Text>photo.jpg</Text>
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  className={`bg-gray-300 w-1/2 py-10 mx-auto rounded-lg flex justify-center items-center shadow ${errors.filePath ? "border border-red-500" : ""}`}
+                  onPress={pickImage}
+                >
+                  <View className="border-hairline border-dashed flex justify-center items-center">
+                    <MaterialCommunityIcons
+                      name="file-image-plus-outline"
+                      color={"#a9a9a9"}
+                      size={100}
+                    />
+                  </View>
+                  <Text>photo.jpg</Text>
+                </TouchableOpacity>
+                <Text className="text-red-500 text-xs mt-1 text-center">
+                  {errors.filePath}
+                </Text>
+              </>
             ) : (
               <TouchableOpacity
                 className="w-1/2 aspect-square mx-auto"
@@ -170,12 +206,14 @@ export default function NewGame({ navigation }: any) {
 
           <View>
             <TextInputField
-              label="Jogo*"
+              label="Nome do jogo*"
               placeholder="Digite o nome do jogo"
               value={inputValues.name}
               onChange={(e: TextInputChangeEvent) =>
                 setInputValues({ ...inputValues, name: e.nativeEvent.text })
               }
+              onFocus={() => setErrors({ ...errors, name: "" })}
+              error={errors.name ?? errors.name}
             />
 
             <TextInputField
@@ -185,6 +223,8 @@ export default function NewGame({ navigation }: any) {
               onChange={(e: TextInputChangeEvent) =>
                 setInputValues({ ...inputValues, review: e.nativeEvent.text })
               }
+              onFocus={() => setErrors({ ...errors, review: "" })}
+              error={errors.review ?? errors.review}
             />
 
             <View className="flex mb-5">

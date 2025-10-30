@@ -4,7 +4,7 @@ O **Ranking Game App** é um aplicativo mobile desenvolvido em **React Native co
 
 O projeto teve como foco o aprendizado dos desenvolvedores com o consumo de APIs e gerenciamento de **Estados** React, com uma interface responsiva utilizando **NativeWind**.
 
-Foi utilizada uma API externa criada pelo grupo de desenvolvedores do presente projeto, essa API está disponível nesse perfil no repositório [`ranking-game-api`](https://github.com/GeovaniSV/ranking-game-api) lá você conseguirá encontrar a documentação da API.
+Foi utilizada uma API externa criada pelo grupo de desenvolvedores do presente projeto, essa API está disponível nesse perfil no repositório [`ranking-game-api`](https://github.com/GeovaniSV/ranking-game-api) lá você conseguirá encontrar o README da API, que também serve como uma breve documentação.
 
 Esse README será utilizado como base de documentação, onde será explicado o objetivo do sistema, como ele foi desenvolvido e como você consegue copiar e rodar o projeto na sua máquina.
 
@@ -12,7 +12,7 @@ Esse README será utilizado como base de documentação, onde será explicado o 
 ## Objetivos do sistema
 O principal objetivo do Ranking Game App, é a possibilidade de criar uma card com a avaliação do usuário dentro do contexto de jogos. Para isso o usuário precisa inserir a foto, o nome do jogo, seu comentário e a nota que o jogo irá receber.
 
-Esse card não será publicado pois a aplicação é somente para uso local, onde você terá os dados guardados na API somente para fins de segurança. Isso faz com que não tenhamos a necessidade de enviar as fotos para um serviço de armazenamento online, a imagem é adicionada ao Sistema de Arquivos do próprio aparelho e a aplicação salva no banco de dados apenas a URI da imagem.   
+Esse card não será publicado pois a aplicação é somente para uso local, onde você terá os dados guardados na API somente para fins de segurança. Isso faz com que não tenhamos a necessidade de enviar as fotos para um serviço de armazenamento online, a imagem é adicionada ao Sistema de Arquivos do próprio aparelho utilizando a biblioteca `expo-file-system/legacy`, e a aplicação salva no banco de dados apenas a URI da imagem.   
 
 ---
 
@@ -20,11 +20,13 @@ Esse card não será publicado pois a aplicação é somente para uso local, ond
 Para o desenvolvimento dessa aplicação foram utilizados tecnologias NodeJS modernas como `TypeScript`, `React Native + Expo` como framework, `NativeWind` que é a biblioteca do TailWind CSS para React Native.
 
 ## Funcionalidades
+Das funcionalidades do app, se destacam:
 
 - Cadastro e autenticação de usuários,
 - Criação de novas **Reviews** personalizadas com persistenacia de dados e fotos, onde a foto é armazenada no armazenamento local do dispositivo do usuário _(no banco de dados somente é persistido a URI da imagem)_.
 - Visualização dos cards das **Reviews** com scroll infinito.
 - Visualização detalhada de cada **Review**, incluindo imagem, nome do jogo, nota e Review
+- Exclusão de Review, excluindo a imagem do dispositivo, e o registro do banco de dados.
 
 ---
 
@@ -37,13 +39,13 @@ src/
 │   ├── GameCard.tsx            # Card com informações resumidas do jogo
 │   ├── GameCardPreview.tsx     # Card padrão para quando o usuário não tiver nenhum card criado ainda.
 │   ├── TextInputField.tsx      # Input de texto reutilizável com estilos padronizados
-│   └── TitleRankingGame.tsx    # Título estilizado da tela de ranking
+│   └── TitleRankingGame.tsx    # Título do APP estilizado para utilizar no topo das telas
 │
 ├── Routes/
 │    └── tab.routes.tsx          # Configuração de rotas com React Navigation - Stack Navigation
 │
 ├── Screens/
-│   ├── GameDetails.tsx         # Tela onde o a Review é detalhada
+│   ├── GameDetails.tsx         # Tela onde a Review é detalhada
 │   ├── Home.tsx                # Tela inicial com listagem e scroll infinito
 │   ├── Login.tsx               # Tela para autenticação de usuários
 │   ├── NewGame.tsx             # Tela para criação de uma nova review
@@ -100,3 +102,9 @@ A API então poderá retornar duas respostas:
 - Reviews: caso a API ainda não tenha retornado todas as reviews, ela retornará mais 5 nesse processo, carregando a tela Home com mais 5 cards.
 
 - 404: caso a API não tenha mais reviews para retornar, ela retorna o código `404 - Not Found` assim o APP entende que não há mais reviews a serem carregadas.
+
+Além da listagem, na tela Home também temos o botão flutuante para ir para a tela de criação de novas reviews, e cada card na tela Home, ao ser clicado, leva o usuário para a tela de **`GameDetail`**
+
+### Tela NewGame (Novo Jogo)
+
+Nessa tela é onde o usuário consegue cadastrar uma **Review**, preenchendo os campos obrigatórios que são: **Imagem**, **Nome do Jogo**, **Review**, **Nota**

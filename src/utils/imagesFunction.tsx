@@ -29,4 +29,22 @@ const saveBase64ImageToFile = async (fileName: string) => {
   }
 };
 
-export { saveBase64ImageToFile };
+const deleteImageFromFiles = async (fileURI: string) => {
+  try {
+    if (!fileURI || fileURI == "") {
+      console.log("FileURI é inválido");
+      return;
+    }
+    const fileInfo = await FileSystem.getInfoAsync(fileURI);
+
+    if (fileInfo.exists) {
+      await FileSystem.deleteAsync(fileURI, { idempotent: true });
+    } else {
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { saveBase64ImageToFile, deleteImageFromFiles };

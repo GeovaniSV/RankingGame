@@ -10,6 +10,7 @@ import { getUniqueGame, deleteGame } from "../Services/gameFunctions";
 //types/interfaces
 import { IGame } from "../Types/gameTypes";
 import Toast from "react-native-toast-message";
+import { deleteImageFromFiles } from "../utils/imagesFunction";
 
 export default function Game({ navigation }: any) {
   const [openModal, setOpenModal] = useState(false);
@@ -60,10 +61,20 @@ export default function Game({ navigation }: any) {
   };
 
   const deleteGameDetail = async () => {
-    setOpenModal(false);
+    if (gameDetail?.filePath) {
+      const deleteImage = await deleteImageFromFiles(gameDetail?.filePath);
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Erro inesperado",
+        text2: "URI da imagem não encotrada",
+      });
+    }
+
     const deleted = await deleteGame(gameDetail?.id!);
 
     if (deleted) {
+      setOpenModal(false);
       navigation.navigate("Home", { refresh: true });
     }
   };

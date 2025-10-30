@@ -15,7 +15,7 @@ const postGame = async ({
     const hasName = name ? name : null;
     const hasDescription = description ? description : null;
     const hasfilePath = filePath ? filePath : null;
-    await api.post(
+    const game = await api.post(
       "/games",
       {
         name: hasName,
@@ -26,6 +26,7 @@ const postGame = async ({
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    return game;
   } catch (error) {
     if (error instanceof AxiosError) {
       const { status, code } = error;
