@@ -4,7 +4,7 @@ O **Ranking Game App** é um aplicativo mobile desenvolvido em **React Native co
 
 O projeto teve como foco o aprendizado dos desenvolvedores com o consumo de APIs e gerenciamento de **Estados** React, com uma interface responsiva utilizando **NativeWind**.
 
-Foi utilizada uma API externa criada pelo grupo de desenvolvedores do presente projeto, essa API está disponível nesse perfil no repositório [`ranking-game-api`](https://github.com/GeovaniSV/ranking-game-api) lá você conseguirá encontrar o README da API, que também serve como uma breve documentação.
+Foi utilizada uma API externa criada pelo grupo de desenvolvedores do presente projeto, essa API está disponível nesse perfil no repositório [`ranking-game-api`](https://github.com/GeovaniSV/ranking-game-api).
 
 Esse README será utilizado como base de documentação, onde será explicado o objetivo do sistema, como ele foi desenvolvido e como você consegue copiar e rodar o projeto na sua máquina.
 
@@ -17,13 +17,13 @@ Esse card não será publicado pois a aplicação é somente para uso local, ond
 ---
 
 # Tecnologias utilizadas
-Para o desenvolvimento dessa aplicação foram utilizados tecnologias NodeJS modernas como `TypeScript`, `React Native + Expo` como framework, `NativeWind` que é a biblioteca do TailWind CSS para React Native.
+Para o desenvolvimento dessa aplicação foram utilizados tecnologias NodeJS modernas como `TypeScript`, `React Native + Expo` como framework e `NativeWind` que é a biblioteca do TailWind CSS para React Native.
 
 ## Funcionalidades
 Das funcionalidades do app, se destacam:
 
 - Cadastro e autenticação de usuários,
-- Criação de novas **Reviews** personalizadas com persistenacia de dados e fotos, onde a foto é armazenada no armazenamento local do dispositivo do usuário _(no banco de dados somente é persistido a URI da imagem)_.
+- Criação de novas **Reviews** personalizadas com persistência de dados e fotos, onde a foto é armazenada no armazenamento local do dispositivo do usuário _(no banco de dados somente é persistido a URI da imagem)_.
 - Visualização dos cards das **Reviews** com scroll infinito.
 - Visualização detalhada de cada **Review**, incluindo imagem, nome do jogo, nota e Review
 - Exclusão de Review, excluindo a imagem do dispositivo, e o registro do banco de dados.
