@@ -108,3 +108,51 @@ Além da listagem, na tela Home também temos o botão flutuante para ir para a 
 ### Tela NewGame (Novo Jogo)
 
 Nessa tela é onde o usuário consegue cadastrar uma **Review**, preenchendo os campos obrigatórios que são: **Imagem**, **Nome do Jogo**, **Review**, **Nota**
+
+- Caso os campos sejam preenchidos da forma correta e a foto seja selecionada, a **Review** será cadastrada, a imagem será adicionada ao sistema de Arquivo local do usuário, a URI da imagem será enviada para o banco de dados e o usuário será enviado de volta para a tela inicial.
+
+- Caso os campos obrigatórios - todos eles - não sejam preenchidos o sistema retornara o código `422 - Unprocessable Entity` com um array de erros informando quais campos não foram preenchidos, assim o APP informará através dos próprios campos quais erros foram encontrados.
+
+
+### Tela GameDetail
+
+Ao clicar em um card da tela inicial, o usuário será direcionado à tela de detalhes `GameDetail`.
+
+Nessa tela é possível visualizar os detalhes do jogo como nome, Review e Nota. Além de ser possível deletar a **Review**.
+
+- Caso o usuário clique no botão `Fechar`, ele será redirecionado para a tela inicial
+
+- Caso o usuário clieque no botão `Apagar` abrirá um **Modal** pedindo a confirmação do usuário para apagar aquela review.
+    - Caso usuário clique em `Cancelar`, o modal apenas será fechado.
+    - Caso o usuário clique em `Apagar`, a **Review** será apagada e o usuário será redirecionado para a tela inicial
+
+---
+# Instalação e uso
+
+Essa seção será utilizada para explicar como clonar este repositório e como rodar a aplicação no seu dispositivo. Para que a aplicação funcione com as funcionalidades de CRUD será necessário que você tenha a API funcionando localmente em sua máquina. Para mais informações sobre a API entre nesse link: [`ranking-game-api`](https://github.com/GeovaniSV/ranking-game-api).
+
+### Clonando este repositório
+
+Para clonar esse repositório você precisa ter o Git instalado.
+
+Após a instalação do Git, vá a uma pasta do seu sistema que você queira clonar o projeto e digite: 
+```bash
+git clone https://github.com/GeovaniSV/RankingGame.git
+```
+
+Isso fará com que o projeto seja clonado do repositório remoto para sua pasta local. Entre no CMD dentro da pasta do projeto e digite: 
+```bash
+npm install
+```
+Isso fará a instalação de todas as dependências do projeto. Todas as dependencias que foram utilizadas no projeto estão no `package.json`, nesse arquivo também tem as informações do projeto e os scripts que podem ser utilizados para iniciá-lo.
+
+após ter instalado todas as dependências, basta digitar no CMD o seguinte comando: 
+```bash
+npm start
+```
+
+Esse comando fará com que o Expo inicie o aplicativo.
+
+Agora você apenas precisa instalar o aplicativo do Expo Go, e ler o QR Code que aparece no CMD após a inicialização do aplicativo.
+
+
